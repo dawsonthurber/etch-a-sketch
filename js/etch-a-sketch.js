@@ -1,23 +1,16 @@
 "use strict";
+const STARTINGCOLOR = "#FFFFFF";
+const SKETCHCOLOR = "#000000";
 
 const gridContainer = document.querySelector("#gridContainer");
 const menuContainer = document.querySelector("#menuContainer");
 const width = gridContainer.clientWidth;
 
-populateGrid(73);
+populateGrid(50);
 
 gridContainer.addEventListener("mouseover", (e) => {
   if (e.target.classList.contains("grid")) {
-    e.target.style.backgroundColor = "white";
-
-    let currentOpacity = parseFloat(e.target.style.opacity);
-    if (!Number.isNaN(currentOpacity)) {
-      if (currentOpacity < 1) {
-        e.target.style.opacity = `${(currentOpacity += 0.2)}`;
-      }
-    } else {
-      e.target.style.opacity = "0.1";
-    }
+    e.target.style.backgroundColor = SKETCHCOLOR;
   }
 });
 
@@ -31,6 +24,9 @@ menuContainer.addEventListener("click", (e) => {
       populateGrid(gridSize);
       break;
     case "clearButton":
+      document
+        .querySelectorAll(".grid")
+        .forEach((grid) => (grid.style.backgroundColor = STARTINGCOLOR));
       break;
   }
 });
@@ -42,7 +38,7 @@ function getNewGridSize() {
 
   let parsedSize = Number.parseInt(newSize);
   if (!Number.isInteger(parsedSize) || parsedSize > 100 || parsedSize < 1) {
-    getNewGridSize();
+    return getNewGridSize();
   } else {
     return parsedSize;
   }
@@ -57,7 +53,7 @@ function populateGrid(gridSize) {
     for (let y = 0; y < gridSize; y++) {
       const grid = document.createElement("div");
       grid.classList = "grid";
-      grid.style.backgroundColor = "#000000";
+      grid.style.backgroundColor = STARTINGCOLOR;
       column.appendChild(grid);
     }
   }
